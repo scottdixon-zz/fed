@@ -1,0 +1,12 @@
+{
+  "name": "fed-assignment",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "view-staging": "open https://fed-assignment.myshopify.com/?preview_theme_id=37053268026",
+    "view-live": "open https://fed-assignment.myshopify.com/?preview_theme_id=",
+    "serve": "yarn view-staging && theme watch -d src -c config.dev.yml",
+    "deploy": "theme upload -d src && yarn view-live"
+  }
+}
