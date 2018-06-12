@@ -196,6 +196,25 @@
               <input type="number" id="Quantity" name="quantity" value="1" min="1" class="quantity-selector">
             </div>
 
+            {% comment %}
+              Personalization fields
+            {% endcomment %}
+            {% if template == "product.personalize" %}
+              {% if section.settings.personalization_1 != "" %}
+                <div>
+                  <label for="personalization-1">{{ section.settings.personalization_1 }}</label>
+                  <input{% if section.settings.personalization_1_required %} required class="required"{% endif %} id="personalization-1" type="text" name="properties[{{ section.settings.personalization_1 }}]">
+                </div>
+              {% endif %}
+
+              {% if section.settings.personalization_2 != "" %}
+                <div>
+                  <label for="personalization-2">{{ section.settings.personalization_2 }}</label>
+                  <input{% if section.settings.personalization_2_required %} required class="required"{% endif %} id="personalization-2" type="text" name="properties[{{ section.settings.personalization_2 }}]">
+                </div>
+              {% endif %}
+            {% endif %}
+
             <button type="submit" name="add" id="AddToCart" class="btn {{ btn_class }}{% if section.settings.enable_payment_button %} btn--secondary{% endif %}">
               <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
             </button>
@@ -381,6 +400,33 @@
             "label": "Large"
           }
         ]
+      },
+      {
+        "type": "header",
+        "content": "Personalized Products",
+        "info": "Let customers customize products"
+      },
+      {
+        "type": "text",
+        "id": "personalization_1",
+        "label": "Personalization 1"
+      },
+      {
+        "type": "checkbox",
+        "id": "personalization_1_required",
+        "label": "Required",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "personalization_2",
+        "label": "Personalization 2"
+      },
+      {
+        "type": "checkbox",
+        "id": "personalization_2_required",
+        "label": "Required",
+        "default": false
       }
     ]
   }
