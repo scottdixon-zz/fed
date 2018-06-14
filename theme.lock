@@ -20,7 +20,7 @@ assets/lazysizes.min.js:
 assets/password-page-background.jpg:
   development: 2018-06-12T11:14:34+10:00   4d5821272f875e5c11dd3a8c8e1d6133
 assets/theme.js:
-  development: 2018-06-13T15:12:31+10:00   3b5f91d5cd1ea064d8b7f1e379f177f8
+  development: 2018-06-14T19:18:00+10:00   ebbe6206ff260ef51f109d081e209422
 assets/theme.scss.liquid:
   development: 2018-06-13T19:41:04+10:00   df581be4fa38d7beafed6e3213e4a57e
 assets/timber.scss.liquid:
@@ -32,7 +32,7 @@ config/settings_schema.json:
 layout/password.liquid:
   development: 2018-06-12T11:14:34+10:00   e506ce97535f355a15074a16e5f57380
 layout/theme.liquid:
-  development: 2018-06-13T15:33:08+10:00   a3fda00fba7846f6b7fcf63c7902bfa1
+  development: 2018-06-14T10:28:44+10:00   e56fd8d9f551b6830af60b173464883a
 locales/de.json:
   development: 2018-06-12T12:07:38+10:00   dd1f83641cc4e0956e7f091b8467348b
 locales/en.default.json:
@@ -58,7 +58,7 @@ sections/cart-template.liquid:
 sections/collection-list.liquid:
   development: 2018-06-12T11:14:32+10:00   5ce167a04cb4d3216afbe926670ff26b
 sections/collection-order.liquid:
-  development: 2018-06-13T19:43:00+10:00   c70e626df764ae752a4f6f81ef308528
+  development: 2018-06-14T19:18:17+10:00   f703208fad0dd39501f0d0b2b3e3fffc
 sections/collection-template.liquid:
   development: 2018-06-12T11:14:32+10:00   793cf91cb9827febf7ae64f907034ecd
 sections/custom-html.liquid:

@@ -1043,6 +1043,127 @@ theme.Collection = (function() {
   return Collection;
 })();
 
+theme.OrderForm = (function() {
+  function OrderForm(container) {
+    var self = this;
+    this.$container = $(container);
+    this.products = JSON.parse(
+      document.getElementById('ProductsJson').innerHTML
+    );
+    this.init();
+  }
+
+  OrderForm.prototype = _.assignIn({}, OrderForm.prototype, {
+    init: function() {
+      var self = this;
+
+      this.checkoutButton = $('#CheckOut');
+
+      // Reveal the order form checkout button
+      this.checkoutButton.removeClass('hide');
+
+      // Create variant drop downs for each product
+      _.each(this.products, function(product) {
+        self.initProductVariant(product);
+      });
+
+      // Listen for checkout click
+      this.checkoutButton.click(this.checkout.bind(this));
+    },
+    initProductVariant: function(product) {
+      var self = this;
+      var productForm = $('#product_form_' + product.id);
+      var priceSpan = productForm.find('.price span');
+      var qtyInput = productForm.find('input[name=quantity]');
+
+      // Remove existing labels
+      $('label[for=ProductSelect-' + product.id + ']').remove();
+      productForm.find('button').remove();
+      productForm.find('.price').removeClass('hide');
+
+      var selectCallback = function(variant, selector) {
+        // Make sure the variant isn't sold out
+        if (variant.available) {
+          qtyInput.removeAttr('disabled');
+          priceSpan.html(Shopify.formatMoney(variant.price, theme.moneyFormat));
+        } else {
+          qtyInput.attr('disabled', 'disabled').val(0);
+          priceSpan.html(theme.strings.soldOut);
+        }
+      };
+
+      new Shopify.OptionSelectors(
+        'ProductSelect-' + product.id,
+        {
+          product: product,
+          onVariantSelected: selectCallback
+        }
+      );
+
+      // Add label if only one product option and it isn't 'Title'. Could be 'Size'.
+      if (product.options.length === 1 && product.options[0] !== 'Title') {
+        $('#product_form_'+product.id+' .selector-wrapper:eq(0)', this.$container).prepend(
+          '<label for="productSelect-option-0">' +
+            product.options[0] +
+          '</label>'
+        );
+      }
+
+      // Hide selectors if we only have 1 variant and its title contains 'Default'.
+      if (
+        product.variants.length === 1 &&
+        product.variants[0].title.toLowerCase().indexOf('default') !== -1
+      ) {
+        productForm.find('.selector-wrapper').hide();
+      }
+    },
+    processQueue: function() {
+      var self = this;
+      if (!this.queue.length) {
+        return document.location.href = '/checkout';
+      }
+
+      var product = this.queue.shift();
+      var productForm = $('#product_form_' + product);
+      var qtyInput = productForm.find('input[name=quantity]');
+      var remaining = this.queueSize-this.queue.length;
+
+      this.checkoutButton.find('#OrderFormProgress').html('(' + remaining + '/' + this.queueSize + ')');
+
+      // Skip zero qty items
+      if (qtyInput.val() > 0) {
+        $.ajax({
+          type: 'POST',
+          url: '/cart/add.js',
+          dataType: 'json',
+          data: $('#product_form_'+product).serialize(),
+          success: self.processQueue.bind(this),
+          error: function (error) {
+            alert(error.responseJSON.description);
+            self.checkoutButton.removeAttr('disabled');
+            self.checkoutButton.find('#OrderFormProgress').empty();
+            qtyInput.focus();
+          }
+        });
+      } else {
+        this.processQueue();
+      }
+    },
+    checkout: function () {
+      this.checkoutButton.attr('disabled', 'disabled')
+
+      this.queue = this.products.map(function(product){
+        return product.id;
+      });
+      this.queueSize = this.queue.length;
+
+      this.processQueue();
+    }
+  });
+
+  return OrderForm;
+})();
+
 theme.ListCollections = (function() {
   function ListCollections(container) {
     this.$container = $(container);
@@ -1536,6 +1657,7 @@ $(document).ready(function() {
 
   sections.register('product-template', theme.Product);
   sections.register('collection-template', theme.Collection);
+  sections.register('order-form-template', theme.OrderForm);
   sections.register('list-collections-template', theme.ListCollections);
   sections.register('cart-template', theme.Cart);
   sections.register('article-template', theme.Article);
