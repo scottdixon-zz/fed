@@ -1105,21 +1105,6 @@ html, body { background: $colorBody; }
   padding-bottom: 5px;
 }
 
-/*================ Order Form ========================*/
-#OrderFormSection {
-  button[type=submit] {
-    margin-top: 20px;
-  }
-  @include at-query($max, $medium) {
-    button[type=submit] {
-      margin-top: 0;
-    }
-    .product-single__quantity {
-      margin-bottom: 0;
-    }
-  }
-}
-
 /*================ Module | Grid Link ================*/
 .grid-link__container {
   margin-bottom: -$gutter;
@@ -2623,5 +2608,27 @@ input[type="submit"].password-page__signup-form__submit {
     position: absolute;
     top: 0;
     width: 100%
+  }
+}
+
+/*================ Order Form ========================*/
+#OrderFormSection {
+  button[type=submit] {
+    margin-top: 20px;
+  }
+  @include at-query($max, $medium) {
+    button[type=submit] {
+      margin-top: 0;
+    }
+    .product-single__quantity {
+      margin-bottom: 0;
+    }
+  }
+}
+
+/*================ Product Template ========================*/
+#shopify-section-product-template {
+  label em {
+      color: $colorPrimary;
   }
 }

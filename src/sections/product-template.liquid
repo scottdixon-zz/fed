@@ -202,14 +202,14 @@
             {% if template == "product.personalize" %}
               {% if section.settings.personalization_1 != "" %}
                 <div>
-                  <label for="personalization-1">{{ section.settings.personalization_1 }}</label>
+                  <label for="personalization-1">{{ section.settings.personalization_1 }}{% if section.settings.personalization_1_required %} <em>(required)</em>{% endif %}</label>
                   <input{% if section.settings.personalization_1_required %} required class="required"{% endif %} id="personalization-1" type="text" name="properties[{{ section.settings.personalization_1 }}]">
                 </div>
               {% endif %}
 
               {% if section.settings.personalization_2 != "" %}
                 <div>
-                  <label for="personalization-2">{{ section.settings.personalization_2 }}</label>
+                  <label for="personalization-2">{{ section.settings.personalization_2 }}{% if section.settings.personalization_2_required %} <em>(required)</em>{% endif %}</label>
                   <input{% if section.settings.personalization_2_required %} required class="required"{% endif %} id="personalization-2" type="text" name="properties[{{ section.settings.personalization_2 }}]">
                 </div>
               {% endif %}

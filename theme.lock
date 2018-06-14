@@ -22,7 +22,7 @@ assets/password-page-background.jpg:
 assets/theme.js:
   development: 2018-06-14T19:18:00+10:00   ebbe6206ff260ef51f109d081e209422
 assets/theme.scss.liquid:
-  development: 2018-06-13T19:41:04+10:00   df581be4fa38d7beafed6e3213e4a57e
+  development: 2018-06-14T19:44:34+10:00   092d3e0c8fc48afbcd72ca8b1e1d68b1
 assets/timber.scss.liquid:
   development: 2018-06-12T11:14:34+10:00   d4edffef339bce03f3020d28cf6c20ae
 config/settings_data.json:
@@ -90,7 +90,7 @@ sections/password-content.liquid:
 sections/password-header.liquid:
   development: 2018-06-12T11:14:33+10:00   139dbe1b79b652043852cc73731d43e4
 sections/product-template.liquid:
-  development: 2018-06-13T13:16:02+10:00   ad6568deb44b19ee971f2e8a9748164e
+  development: 2018-06-14T19:33:40+10:00   6a5ee9766c2c655b0e673f3e3f5abae3
 sections/rich-text.liquid:
   development: 2018-06-12T11:14:33+10:00   408f02185ca5329eb1a670cf19ea4089
 sections/slider.liquid:
