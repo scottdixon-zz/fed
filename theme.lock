@@ -20,9 +20,9 @@ assets/lazysizes.min.js:
 assets/password-page-background.jpg:
   development: 2018-06-12T11:14:34+10:00   4d5821272f875e5c11dd3a8c8e1d6133
 assets/theme.js:
-  development: 2018-06-14T19:18:00+10:00   ebbe6206ff260ef51f109d081e209422
+  development: 2018-06-15T15:59:51+10:00   6ae6259ecc71f16821761941557ea6f6
 assets/theme.scss.liquid:
-  development: 2018-06-14T19:44:34+10:00   092d3e0c8fc48afbcd72ca8b1e1d68b1
+  development: 2018-06-15T08:23:02+10:00   092d3e0c8fc48afbcd72ca8b1e1d68b1
 assets/timber.scss.liquid:
   development: 2018-06-12T11:14:34+10:00   d4edffef339bce03f3020d28cf6c20ae
 config/settings_data.json:
@@ -32,7 +32,7 @@ config/settings_schema.json:
 layout/password.liquid:
   development: 2018-06-12T11:14:34+10:00   e506ce97535f355a15074a16e5f57380
 layout/theme.liquid:
-  development: 2018-06-14T10:28:44+10:00   e56fd8d9f551b6830af60b173464883a
+  development: 2018-06-15T08:23:00+10:00   e56fd8d9f551b6830af60b173464883a
 locales/de.json:
   development: 2018-06-12T12:07:38+10:00   dd1f83641cc4e0956e7f091b8467348b
 locales/en.default.json:
@@ -58,7 +58,7 @@ sections/cart-template.liquid:
 sections/collection-list.liquid:
   development: 2018-06-12T11:14:32+10:00   5ce167a04cb4d3216afbe926670ff26b
 sections/collection-order.liquid:
-  development: 2018-06-14T19:18:17+10:00   f703208fad0dd39501f0d0b2b3e3fffc
+  development: 2018-06-15T15:51:42+10:00   79d16f99d8ec876e5f1d5eef85b392ca
 sections/collection-template.liquid:
   development: 2018-06-12T11:14:32+10:00   793cf91cb9827febf7ae64f907034ecd
 sections/custom-html.liquid:
@@ -90,7 +90,7 @@ sections/password-content.liquid:
 sections/password-header.liquid:
   development: 2018-06-12T11:14:33+10:00   139dbe1b79b652043852cc73731d43e4
 sections/product-template.liquid:
-  development: 2018-06-14T19:33:40+10:00   6a5ee9766c2c655b0e673f3e3f5abae3
+  development: 2018-06-15T08:22:59+10:00   6a5ee9766c2c655b0e673f3e3f5abae3
 sections/rich-text.liquid:
   development: 2018-06-12T11:14:33+10:00   408f02185ca5329eb1a670cf19ea4089
 sections/slider.liquid:

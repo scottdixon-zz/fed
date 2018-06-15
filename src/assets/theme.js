@@ -1067,6 +1067,14 @@ theme.OrderForm = (function() {
         self.initProductVariant(product);
       });
 
+      $('#OrderForm form').submit(function(e) {
+        e.preventDefault();
+        $('html, body').animate({
+          scrollTop: $("#CheckOut").offset().top
+        }, 500);
+        self.checkout.call(self);
+      });
+
       // Listen for checkout click
       this.checkoutButton.click(this.checkout.bind(this));
     },
