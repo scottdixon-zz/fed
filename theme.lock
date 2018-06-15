@@ -58,7 +58,7 @@ sections/cart-template.liquid:
 sections/collection-list.liquid:
   development: 2018-06-12T11:14:32+10:00   5ce167a04cb4d3216afbe926670ff26b
 sections/collection-order.liquid:
-  development: 2018-06-15T15:51:42+10:00   79d16f99d8ec876e5f1d5eef85b392ca
+  development: 2018-06-15T16:13:54+10:00   4456bcffc15049e41150d402327b484f
 sections/collection-template.liquid:
   development: 2018-06-12T11:14:32+10:00   793cf91cb9827febf7ae64f907034ecd
 sections/custom-html.liquid:
