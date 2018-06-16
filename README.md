@@ -2,7 +2,7 @@
 
 1. Clone the repo and create a ThemeKit config file.
  ```
- $ git clone git@github.com:scottdixon/fed-assignment.git
+ $ git clone git@github.com:scottdixon/fed.git
  $ cd fed-assignment
  $ touch config.yml
  ```
@@ -11,12 +11,12 @@
 ```
 development:
   password: <api-password>
-  theme_id: "37053268026"
-  store: fed-assignment.myshopify.com
+  theme_id: <preview-theme-id>
+  store: <store>
 production:
   password: <api-password>
-  theme_id: "37050417210"
-  store: fed-assignment.myshopify.com
+  theme_id: <live-theme-id>
+  store: <store>
 ```
 
 
