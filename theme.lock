@@ -87,7 +87,7 @@ sections/collection-list.liquid:
   development: 2018-06-12T11:14:32+10:00   5ce167a04cb4d3216afbe926670ff26b
   production: 2018-06-12T11:14:32+10:00   5ce167a04cb4d3216afbe926670ff26b
 sections/collection-order.liquid:
-  development: 2018-06-15T16:13:54+10:00   4456bcffc15049e41150d402327b484f
+  development: 2018-06-16T14:35:58+10:00   5302128cb97a151151aa2446a219a137
   production: 2018-06-15T17:05:43+10:00   4456bcffc15049e41150d402327b484f
 sections/collection-template.liquid:
   development: 2018-06-12T11:14:32+10:00   793cf91cb9827febf7ae64f907034ecd
@@ -185,6 +185,8 @@ snippets/oldIE-js.liquid:
 snippets/onboarding-featured-blog.liquid:
   development: 2018-06-12T11:14:35+10:00   9f64f9f3d710b57c959341e6293d0dd3
   production: 2018-06-12T11:14:35+10:00   9f64f9f3d710b57c959341e6293d0dd3
+snippets/order-list-item.liquid:
+  development: 2018-06-16T14:35:34+10:00   7c0b13fdfd174c37c35544566080feab
 snippets/pagination-custom.liquid:
   development: 2018-06-12T11:14:35+10:00   13a718c4d2a26a6c5b0a4088feffcdee
   production: 2018-06-12T11:14:35+10:00   13a718c4d2a26a6c5b0a4088feffcdee
