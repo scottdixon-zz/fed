@@ -17,3 +17,4 @@ ehthumbs.db
 Thumbs.db
 
 config.yml
+./src/config/settings_data.json
