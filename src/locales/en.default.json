@@ -277,7 +277,9 @@
       "sale_price": "Sale price",
       "regular_price": "Regular price",
       "description": "Description",
-      "full_details": "Full details"
+      "full_details": "Full details",
+      "price_per_unit": "Price Per Unit",
+      "add_another_variant": "+ add another variant"
     },
     "zoom": {
       "next": "Next (Right arrow key)",

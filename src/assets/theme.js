@@ -1060,13 +1060,21 @@ theme.OrderForm = (function() {
     init: function() {
       var self = this;
 
+      this.cachedForms = {};
       this.checkoutButton = $('#CheckOut');
 
       // Reveal the order form checkout button
       this.checkoutButton.removeClass('hide');
 
-      // Create variant drop downs for each product
       _.each(this.products, function(product) {
+        // Keep a copy of the forms for duplicating later on
+        self.cachedForms[product.id] = {
+          count: 1,
+          product: product,
+          form: $('#product_form_' + product.id).clone()
+        };
+
+        // Create variant drop downs for each product
         self.initProductVariant(product);
       });
 
@@ -1083,14 +1091,36 @@ theme.OrderForm = (function() {
     },
     initProductVariant: function(product) {
       var self = this;
+      var originalProductId = product.id.toString().split('-')[0];
       var productForm = $('#product_form_' + product.id);
       var priceSpan = productForm.find('.price span');
       var qtyInput = productForm.find('input[name=quantity]');
+      var copy = self.cachedForms[originalProductId];
 
       // Remove existing labels
-      $('label[for=ProductSelect-' + product.id + ']').remove();
+      productForm.find('label:first').remove();
       productForm.find('button').remove();
       productForm.find('.price').removeClass('hide');
+
+      // Add a duplicate button
+      productForm.find('h3').append('<a href="javascript:;">' + theme.strings.addAnotherVariant + '</a>');
+      productForm.find('h3').on('click', 'a', function(){
+        var form = copy.form;
+
+        // Keep track of total clones
+        copy.count++;
+        var productIdWithCount = originalProductId + '-' + copy.count;
+
+        // Update form + select ids to include the clone number.
+        form.attr('id', 'product_form_' + productIdWithCount);
+        form.find('select[name=id]').attr('id', 'ProductSelect-' + productIdWithCount);
+
+        // Insert the clone into the DOM and inititalize
+        form.clone().insertAfter($(this).closest('form'));
+        $('<hr />').insertAfter($(this).closest('form'));
+
+        self.initProductVariant({ id: productIdWithCount });
+      });
 
       var selectCallback = function(variant, selector) {
         // Make sure the variant isn't sold out
@@ -1106,24 +1136,26 @@ theme.OrderForm = (function() {
       new Shopify.OptionSelectors(
         'ProductSelect-' + product.id,
         {
-          product: product,
+          product: copy.product,
           onVariantSelected: selectCallback
         }
       );
 
       // Add label if only one product option and it isn't 'Title'. Could be 'Size'.
-      if (product.options.length === 1 && product.options[0] !== 'Title') {
+      var options = copy.product.options;
+      if (options.length === 1 && options[0] !== 'Title') {
         $('#product_form_'+product.id+' .selector-wrapper:eq(0)', this.$container).prepend(
           '<label for="productSelect-option-0">' +
-            product.options[0] +
+            options[0] +
           '</label>'
         );
       }
 
+      var variants = copy.product.variants;
       // Hide selectors if we only have 1 variant and its title contains 'Default'.
       if (
-        product.variants.length === 1 &&
-        product.variants[0].title.toLowerCase().indexOf('default') !== -1
+        variants.length === 1 &&
+        variants[0].title.toLowerCase().indexOf('default') !== -1
       ) {
         productForm.find('.selector-wrapper').hide();
       }
@@ -1134,8 +1166,7 @@ theme.OrderForm = (function() {
         return document.location.href = '/checkout';
       }
 
-      var product = this.queue.shift();
-      var productForm = $('#product_form_' + product);
+      var productForm = $(this.queue.shift());
       var qtyInput = productForm.find('input[name=quantity]');
       var remaining = this.queueSize-this.queue.length;
 
@@ -1147,7 +1178,7 @@ theme.OrderForm = (function() {
           type: 'POST',
           url: '/cart/add.js',
           dataType: 'json',
-          data: $('#product_form_'+product).serialize(),
+          data: productForm.serialize(),
           success: self.processQueue.bind(this),
           error: function (error) {
             alert(error.responseJSON.description);
@@ -1163,9 +1194,7 @@ theme.OrderForm = (function() {
     checkout: function () {
       this.checkoutButton.attr('disabled', 'disabled')
 
-      this.queue = this.products.map(function(product){
-        return product.id;
-      });
+      this.queue = $('#OrderForm form').toArray();
       this.queueSize = this.queue.length;
 
       this.processQueue();
