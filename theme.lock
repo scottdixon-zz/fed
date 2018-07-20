@@ -128,7 +128,7 @@ snippets/order-list-item.liquid:
 snippets/pagination-custom.liquid:
   development: 2018-07-19T12:05:58+10:00   13a718c4d2a26a6c5b0a4088feffcdee
 snippets/personalize.liquid:
-  development: 2018-07-20T13:34:24+10:00   d21284af0b2ec222976705ffdfee1372
+  development: 2018-07-20T17:49:53+10:00   8c26281652639c67f75cc73998e1b327
 snippets/product-grid-item.liquid:
   development: 2018-07-19T12:05:59+10:00   c6d04fa50c80dcfa75ba4570139eda64
 snippets/related-products.liquid:

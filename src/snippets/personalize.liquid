@@ -1,7 +1,3 @@
-{% assign example_dynamic_word = 'Please select' %}
-{% capture dynamic_translation_key %}general.forms.{{ example_dynamic_word | handleize | replace: '-', '_' }}{% endcapture %}
-{{ dynamic_translation_key | t }}
-{% capture required %}<em>({{'general.forms.required' | t}})</em>{% endcapture %}
 {% for block in blocks %}
   <div {{ block.shopify_attributes }} data-type={{ block.type }} class="personalization-{{ block.type }}">
 
