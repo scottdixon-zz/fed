@@ -29,6 +29,10 @@
       "submit": "Suscribir",
       "confirmation": "Gracias por suscribirse"
     },
+    "forms": {
+      "required": "necesario",
+      "please_select": "Por favor selecciona"
+    },
     "search": {
       "no_results_html": "Su búsqueda de \"{{ terms }}\" no tuvo resultados.",
       "results_for_html": "Su búsqueda de \"{{ terms }}\" muestra lo siguiente:",

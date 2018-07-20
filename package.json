@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "view-staging": "open https://fed-assignment.myshopify.com/?preview_theme_id=37053268026",
+    "view-staging": "open https://fed-assignment.myshopify.com/?preview_theme_id=44135186490",
     "view-live": "open https://fed-assignment.myshopify.com/?preview_theme_id=",
     "serve": "yarn view-staging && theme watch -d src -e development",
     "deploy": "theme upload -d src -e production && yarn view-live"

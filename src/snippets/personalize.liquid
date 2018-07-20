@@ -1,0 +1,41 @@
+{% assign example_dynamic_word = 'Please select' %}
+{% capture dynamic_translation_key %}general.forms.{{ example_dynamic_word | handleize | replace: '-', '_' }}{% endcapture %}
+{{ dynamic_translation_key | t }}
+{% capture required %}<em>({{'general.forms.required' | t}})</em>{% endcapture %}
+{% for block in blocks %}
+  <div {{ block.shopify_attributes }} data-type={{ block.type }} class="personalization-{{ block.type }}">
+
+  {% case block.type %}
+    {% when 'input' %}
+        <label for="personalization-{{ forloop.index }}">{{ block.settings.label }}{% if block.settings.required %} {{required}}{% endif %}</label>
+        <input{% if block.settings.required %} required class="required"{% endif %} id="personalization-{{ forloop.index }}" type="text" name="properties[{{ block.settings.label }}]">
+    {% when 'textarea' %}
+        <label for="personalization-{{ forloop.index }}">{{ block.settings.label }}{% if block.settings.required %} {{required}}{% endif %}</label>
+        <textarea{% if block.settings.required %} required class="required"{% endif %} id="personalization-{{ forloop.index }}" name="properties[{{ block.settings.label }}]"></textarea>
+    {% when 'checkbox' %}
+        <label for="personalization-{{ forloop.index }}"><input {% if block.settings.required %} required class="required"{% endif %} type="checkbox" name="properties[{{ block.settings.label }}]" /> {{ block.settings.label }}{% if block.settings.required %} {{required}}{% endif %}</label>
+    {% when 'colour' %}
+        <label for="personalization-{{ forloop.index }}">{{ block.settings.label }}{% if block.settings.required %} {{required}}{% endif %}</label>
+        <input role="presentation" autocomplete="false"{% if block.settings.required %} required{% endif %} class="colour-picker{% if block.settings.required %} required{% endif %}" id="personalization-{{ forloop.index }}" type="text" name="properties[{{ block.settings.label }}]">
+    {% when 'select' %}
+      {% assign options = block.settings.options | split: ","  %}
+      <label for="personalization-{{ forloop.index }}">{{ block.settings.label }}{% if block.settings.required %} {{required}}{% endif %}</label>
+      <select id="personalization-{{ forloop.index }}" name="properties[{{ block.settings.label }}]"{% if block.settings.required %} required class="required"{% endif %}>
+        <option value="" disabled selected>{{'general.forms.please_select' | t}}</option>
+        {% for option in options %}
+          <option value="{{ option | strip }}">{{ option | strip }}</option>
+        {% endfor %}
+      </select>
+    {% when 'radio' %}
+      {% assign options = block.settings.options | split: ","  %}
+      {% assign personalize_index = forloop.index %}
+      <label>{{ block.settings.label }}{% if block.settings.required %} {{required}}{% endif %}</label>
+      {% for option in options %}
+        {% comment %}Create a unique label id, there might be more than one set of radio buttons{% endcomment %}
+        {% assign label_id = "p-" | append: personalize_index | append: "-r-" | append: forloop.index %}
+        <input type="radio" name="properties[{{ block.settings.label }}]" value="{{ option | strip }}" id="{{ label_id }}" {% if block.settings.required %} required class="required"{% endif %}> <label for="{{ label_id }}" class="radio-label">{{ option | strip }}</label><br>
+      {% endfor %}
+  {% endcase %}
+
+  </div>
+{% endfor %}

@@ -29,6 +29,10 @@
       "submit": "Subscribe",
       "confirmation": "Thanks for subscribing"
     },
+    "forms": {
+      "required": "required",
+      "please_select": "Please select"
+    },
     "search": {
       "no_results_html": "Your search for \"{{ terms }}\" did not yield any results.",
       "results_for_html": "Your search for \"{{ terms }}\" revealed the following:",
