@@ -1,5 +1,11 @@
 {% comment %}
   The contents of the product.liquid template can be found in /sections/product-template.liquid
 {% endcomment %}
+{% capture product_template %}{% section 'product-template' %}{% endcapture %}
 
-{% section 'product-template' %}
+{% comment %}
+Inject personalize options into the product page.
+{% endcomment %}
+{% capture personalize %}{% section 'product-personalize' %}{% endcapture %}
+{% assign personalize = personalize | replace: 'class="shopify-section"', 'class="shopify-section-nested"' %}
+{{ product_template | replace: '<div id="personalize"></div>', personalize }}

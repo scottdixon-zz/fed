@@ -1,3 +1,4 @@
+{% capture required %}<em>({{'general.forms.required' | t}})</em>{% endcapture %}
 {% for block in blocks %}
   <div {{ block.shopify_attributes }} data-type={{ block.type }} class="personalization-{{ block.type }}">
 

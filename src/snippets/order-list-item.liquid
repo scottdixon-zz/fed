@@ -28,6 +28,9 @@
               {% endif %}
             {% endfor %}
           </select>
+          {% if product.template_suffix == 'personalize' %}
+            <div id="personalize"></div>
+          {% endif %}
         </div>
         <div class="grid__item post-large--one-third">
           <div class="product-single__quantity">

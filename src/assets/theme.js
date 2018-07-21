@@ -1080,10 +1080,13 @@ theme.OrderForm = (function() {
 
       $('#OrderForm form').submit(function(e) {
         e.preventDefault();
-        $('html, body').animate({
-          scrollTop: $("#CheckOut").offset().top
-        }, 500);
-        self.checkout.call(self);
+        if (self.validate()) {
+          $('html, body').animate({
+            scrollTop: $("#CheckOut").offset().top - 300
+          }, 500, function () {
+            self.checkout.call(self);
+          });
+        }
       });
 
       // Listen for checkout click
@@ -1099,7 +1102,7 @@ theme.OrderForm = (function() {
 
       // Remove existing labels
       productForm.find('label:first').remove();
-      productForm.find('button').remove();
+      productForm.find('button').hide();
       productForm.find('.price').removeClass('hide');
 
       // Add a duplicate button
@@ -1191,7 +1194,25 @@ theme.OrderForm = (function() {
         this.processQueue();
       }
     },
+    validate: function () {
+      var valid = true;
+      $('#OrderForm form').each(function(){
+        // Check the user is ordering this product
+        if ($(this).find('input[name=quantity]').val() > 0) {
+          // If the form is invalid, trigger browser error handling
+          if (!$(this)[0].checkValidity()) {
+            $(this).find('button').click()
+            valid = false;
+            return false;
+          }
+        }
+      })
+      return valid;
+    },
     checkout: function () {
+      // Validate personalized fields
+      if (!this.validate()) return false;
+
       this.checkoutButton.attr('disabled', 'disabled')
 
       this.queue = $('#OrderForm form').toArray();

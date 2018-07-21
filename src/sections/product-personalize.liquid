@@ -1,0 +1,140 @@
+<div data-section-id="{{ section.id }}">
+  {% if product.template_suffix == 'personalize' or collection.template_suffix == 'order' %}
+    {% include 'personalize' with blocks: section.blocks  %}
+  {% endif %}
+</div>
+
+{% schema %}
+  {
+    "name": "Personalized Products",
+    "blocks": [
+      {
+        "type": "input",
+        "name": "Text Input (short)",
+        "settings": [
+          {
+            "id": "label",
+            "type": "text",
+         		"label": "Label",
+            "default": "Your Name"
+          },
+          {
+            "type": "checkbox",
+            "id": "required",
+            "label": "Required",
+            "default": false
+          }
+        ]
+      },
+      {
+        "type": "textarea",
+        "name": "Text Input (long)",
+        "settings": [
+          {
+            "id": "label",
+            "type": "text",
+         		"label": "Label",
+            "default": "Your Bio"
+          },
+          {
+            "type": "checkbox",
+            "id": "required",
+            "label": "Required",
+            "default": false
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "name": "Checkbox",
+        "settings": [
+          {
+            "id": "label",
+            "type": "text",
+         		"label": "Label",
+            "default": "I Agree"
+          },
+          {
+            "type": "checkbox",
+            "id": "required",
+            "label": "Required",
+            "default": false
+          }
+        ]
+      },
+      {
+        "type": "colour",
+        "name": "Colour Picker",
+        "settings": [
+          {
+            "id": "label",
+            "type": "text",
+         		"label": "Label",
+            "default": "Colour"
+          },
+          {
+            "type": "checkbox",
+            "id": "required",
+            "label": "Required",
+            "default": false
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "name": "Dropdown",
+        "settings": [
+          {
+            "id": "label",
+            "type": "text",
+         		"label": "Label",
+            "default": "Charity"
+          },
+          {
+            "id": "options",
+            "type": "text",
+            "label": "Options (comma separated)",
+            "default": "Red Cross, World Vision"
+          },
+          {
+            "type": "checkbox",
+            "id": "required",
+            "label": "Required",
+            "default": false
+          }
+        ]
+      },
+      {
+        "type": "radio",
+        "name": "Radio Buttons",
+        "settings": [
+          {
+            "id": "label",
+            "type": "text",
+         		"label": "Label",
+            "default": "Charity"
+          },
+          {
+            "id": "options",
+            "type": "text",
+            "label": "Options (comma separated)",
+            "default": "Red Cross, World Vision"
+          },
+          {
+            "type": "checkbox",
+            "id": "required",
+            "label": "Required",
+            "default": false
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% javascript %}
+$('.colour-picker').colorPicker()
+$(document).on('shopify:section:load, shopify:block:select', function () {
+  $('.colour-picker').colorPicker();
+});
+{% endjavascript %}

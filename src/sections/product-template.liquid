@@ -196,19 +196,12 @@
               <input type="number" id="Quantity" name="quantity" value="1" min="1" class="quantity-selector">
             </div>
 
-            {% comment %}
-              Personalization fields
-            {% endcomment %}
-            {% if template == "product.personalize" %}
-              {% include 'personalize' with blocks: section.blocks  %}
-            {% endif %}
+            {% comment %}This div will be replaced with personalize fields{% endcomment %}
+            <div id="personalize"></div>
 
             <button type="submit" name="add" id="AddToCart" class="btn {{ btn_class }}{% if section.settings.enable_payment_button %} btn--secondary{% endif %}">
               <span id="AddToCartText">{{ 'products.product.add_to_cart' | t }}</span>
             </button>
-            {% if section.settings.enable_payment_button %}
-              {{ form | payment_button }}
-            {% endif %}
           {% endform %}
 
           {% unless section.settings.show_extra_tab == false or pages[section.settings.extra_tab_content] == empty %}
@@ -389,135 +382,6 @@
           }
         ]
       }
-    ],
-    "blocks": [
-      {
-        "type": "input",
-        "name": "Text Input (short)",
-        "settings": [
-          {
-            "id": "label",
-            "type": "text",
-         		"label": "Label",
-            "default": "Your Name"
-          },
-          {
-            "type": "checkbox",
-            "id": "required",
-            "label": "Required",
-            "default": false
-          }
-        ]
-      },
-      {
-        "type": "textarea",
-        "name": "Text Input (long)",
-        "settings": [
-          {
-            "id": "label",
-            "type": "text",
-         		"label": "Label",
-            "default": "Your Bio"
-          },
-          {
-            "type": "checkbox",
-            "id": "required",
-            "label": "Required",
-            "default": false
-          }
-        ]
-      },
-      {
-        "type": "checkbox",
-        "name": "Checkbox",
-        "settings": [
-          {
-            "id": "label",
-            "type": "text",
-         		"label": "Label",
-            "default": "I Agree"
-          },
-          {
-            "type": "checkbox",
-            "id": "required",
-            "label": "Required",
-            "default": false
-          }
-        ]
-      },
-      {
-        "type": "colour",
-        "name": "Colour Picker",
-        "settings": [
-          {
-            "id": "label",
-            "type": "text",
-         		"label": "Label",
-            "default": "Colour"
-          },
-          {
-            "type": "checkbox",
-            "id": "required",
-            "label": "Required",
-            "default": false
-          }
-        ]
-      },
-      {
-        "type": "select",
-        "name": "Dropdown",
-        "settings": [
-          {
-            "id": "label",
-            "type": "text",
-         		"label": "Label",
-            "default": "Charity"
-          },
-          {
-            "id": "options",
-            "type": "text",
-            "label": "Options (comma separated)",
-            "default": "Red Cross, World Vision"
-          },
-          {
-            "type": "checkbox",
-            "id": "required",
-            "label": "Required",
-            "default": false
-          }
-        ]
-      },
-      {
-        "type": "radio",
-        "name": "Radio Buttons",
-        "settings": [
-          {
-            "id": "label",
-            "type": "text",
-         		"label": "Label",
-            "default": "Charity"
-          },
-          {
-            "id": "options",
-            "type": "text",
-            "label": "Options (comma separated)",
-            "default": "Red Cross, World Vision"
-          },
-          {
-            "type": "checkbox",
-            "id": "required",
-            "label": "Required",
-            "default": false
-          }
-        ]
-      }
     ]
   }
 {% endschema %}
-
-{% javascript %}
-$('.colour-picker').colorPicker()
-$(document).on('shopify:section:load, shopify:block:select', function () {
-  $('.colour-picker').colorPicker();
-});
-{% endjavascript %}
