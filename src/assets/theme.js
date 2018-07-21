@@ -1083,9 +1083,13 @@ theme.OrderForm = (function() {
         if (self.validate()) {
           $('html, body').animate({
             scrollTop: $("#CheckOut").offset().top - 300
-          }, 500, function () {
+          }, 500);
+
+          // Callback fires twice (once for each element)
+          // Using setTimeout instead
+          setTimeout(function(){
             self.checkout.call(self);
-          });
+          }, 500);
         }
       });
 
@@ -1184,10 +1188,21 @@ theme.OrderForm = (function() {
           data: productForm.serialize(),
           success: self.processQueue.bind(this),
           error: function (error) {
-            alert(error.responseJSON.description);
             self.checkoutButton.removeAttr('disabled');
             self.checkoutButton.find('#OrderFormProgress').empty();
-            qtyInput.focus();
+
+            // Display error message
+            var errorMsg = error.responseJSON.description;
+            var errorAlert = '<div class="grid__item cart-errors"><div class="errors">' + errorMsg + '</div></div>';
+            productForm.find('.grid:first').append(errorAlert);
+
+            // Scroll to the product in question
+            $('html, body').animate({
+              scrollTop: productForm.offset().top
+            }, 500);
+
+            // Empty the cart
+            $.ajax({ type: 'POST', url: '/cart/clear.js'});
           }
         });
       } else {
@@ -1210,6 +1225,9 @@ theme.OrderForm = (function() {
       return valid;
     },
     checkout: function () {
+      // Clear any existing errors
+      $('.cart-errors').remove()
+
       // Validate personalized fields
       if (!this.validate()) return false;
 
