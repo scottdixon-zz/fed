@@ -1065,6 +1065,8 @@ theme.OrderForm = (function() {
 
       this.cachedForms = {};
       this.checkoutButton = $('#check-out');
+      this.orderForm = $('#order-form');
+      this.progress = $('#order-form-progress');
 
       // Reveal the order form checkout button
       this.checkoutButton.removeClass('hide');
@@ -1095,8 +1097,8 @@ theme.OrderForm = (function() {
 
       // Select filter
       if (this.filter) {
-        $('#check-out').attr('disabled', 'disabled');
-        $('#order-form').html(theme.strings.emptyOrderForm).addClass('empty');
+        this.checkoutButton.attr('disabled', 'disabled');
+        this.orderForm.html(theme.strings.emptyOrderForm).addClass('empty');
 
         $('#product-filter').show().select2({
           placeholder: theme.strings.addAProduct,
@@ -1105,15 +1107,15 @@ theme.OrderForm = (function() {
         $('#product-filter').on('select2:select', function (e) {
             var data = e.params.data;
             var image = $(data.element).data('image');
-            if ($('#order-form').hasClass('empty')) {
-              $('#order-form').removeClass('empty');
-              $('#order-form').empty();
-              $('#check-out').removeAttr('disabled');
+            if (self.orderForm.hasClass('empty')) {
+              self.orderForm.removeClass('empty');
+              self.orderForm.empty();
+              self.checkoutButton.removeAttr('disabled');
             }
             self.cloneProduct(data.id);
 
             // Default quantity to 1
-            $('#Quantity-'+data.id).val(1);
+            $('#Quantity-' + data.id).val(1);
             $(this).val(null).trigger("change");
         });
       }
@@ -1124,32 +1126,30 @@ theme.OrderForm = (function() {
       // Sticky checkout button
       $(window).scroll(function (event) {
         var bottomY = $(this).scrollTop() + $(window).height();
-        var firstProduct = $('#order-form form:first');
-        var orderForm = $('#order-form');
+        var firstProduct = self.orderForm.find('#order-form form:first');
 
         // Handle empty forms
         if (!firstProduct.length) {
-          return $('#check-out').removeClass('sticky');
+          return self.checkoutButton.removeClass('sticky');
         }
 
         var bottomOfFirstProduct = firstProduct.offset().top + firstProduct.height();
-        var bottomOfOrderForm = orderForm.offset().top + orderForm.height() + 75;
+        var bottomOfOrderForm = self.orderForm.offset().top + self.orderForm.height() + 75;
 
         // If the user has scrolled past the first product but hasn't scrolled past the last
         if (bottomY >= bottomOfFirstProduct && bottomY <= bottomOfOrderForm) {
           // Graceful slide in
           var bottom = Math.min(bottomY - bottomOfFirstProduct - 60, 0);
-          $('#check-out').css('bottom', bottom + 'px');
-          $('#check-out').addClass('sticky');
+          self.checkoutButton.css('bottom', bottom + 'px');
+          self.checkoutButton.addClass('sticky');
         } else {
-          $('#check-out').removeClass('sticky');
+          self.checkoutButton.removeClass('sticky');
         }
       }).trigger('scroll');
 
     },
     cloneProduct: function (productId, insertAfter) {
-      var self = this;
-      var copy = self.cachedForms[productId];
+      var copy = this.cachedForms[productId];
       var form = copy.form;
 
       // Keep track of total clones
@@ -1165,11 +1165,11 @@ theme.OrderForm = (function() {
       if (insertAfter) {
         form.clone().insertAfter(insertAfter);
       } else {
-        $('#order-form').prepend(form.clone());
+        this.orderForm.prepend(form.clone());
       }
 
       // Initialize new product
-      self.initProduct({ id: productIdWithCount });
+      this.initProduct({ id: productIdWithCount });
 
       // Trigger scroll to handle sticky checkout button
       $(window).trigger('scroll');
@@ -1188,7 +1188,7 @@ theme.OrderForm = (function() {
         // Valide, scroll down and submit
         if (self.validate()) {
           $('html, body').animate({
-            scrollTop: $("#check-out").offset().top - 300
+            scrollTop: self.checkoutButton.offset().top - 300
           }, 500);
 
           // Callback fires twice (once for each element)
@@ -1209,9 +1209,9 @@ theme.OrderForm = (function() {
         productForm.find('h3').append('<a href="javascript:;">' + theme.strings.remove + '</a>');
         productForm.find('h3').on('click', 'a', function() {
           $(this).closest('form').remove();
-          if (!$('#order-form form').length) {
-            $('#order-form').html(theme.strings.emptyOrderForm).addClass('empty');
-            $('#check-out').attr('disabled', 'disabled');
+          if (!self.orderForm.find('form').length) {
+            self.orderForm.html(theme.strings.emptyOrderForm).addClass('empty');
+            self.checkoutButton.attr('disabled', 'disabled');
             $(window).trigger('scroll');
           }
         });
@@ -1271,7 +1271,7 @@ theme.OrderForm = (function() {
       var qtyInput = productForm.find('input[name=quantity]');
       var remaining = this.queueSize-this.queue.length;
 
-      this.checkoutButton.find('#order-form-progress').html('(' + remaining + '/' + this.queueSize + ')');
+      this.progress.html('(' + remaining + '/' + this.queueSize + ')');
 
       // Skip zero qty items
       if (qtyInput.val() > 0) {
@@ -1283,7 +1283,7 @@ theme.OrderForm = (function() {
           success: self.processQueue.bind(this),
           error: function (error) {
             self.checkoutButton.removeAttr('disabled');
-            self.checkoutButton.find('#order-form-progress').empty();
+            self.progress.empty();
 
             // Display error message
             var errorMsg = error.responseJSON.description;
@@ -1305,7 +1305,7 @@ theme.OrderForm = (function() {
     },
     validate: function () {
       var valid = true;
-      $('#order-form form').each(function(){
+      this.orderForm.find('form').each(function(){
         // Check the user is ordering this product
         if ($(this).find('input[name=quantity]').val() > 0) {
           // If the form is invalid, trigger browser error handling
@@ -1327,7 +1327,7 @@ theme.OrderForm = (function() {
 
       this.checkoutButton.attr('disabled', 'disabled')
 
-      this.queue = $('#order-form form').toArray();
+      this.queue = this.orderForm.find('form').toArray();
       this.queueSize = this.queue.length;
 
       this.processQueue();
