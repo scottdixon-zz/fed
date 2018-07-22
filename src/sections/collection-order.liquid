@@ -1,4 +1,7 @@
-<div id="OrderFormSection" data-section-id="{{ section.id }}" data-section-type="order-form-template" data-sort-enabled="{{ section.settings.sort_enable }}" data-tags-enabled="{{ section.settings.tags_enable }}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+<div id="OrderFormSection" data-section-id="{{ section.id }}" data-section-filter="{{ section.settings.filter }}" data-section-type="order-form-template" data-sort-enabled="{{ section.settings.sort_enable }}" data-tags-enabled="{{ section.settings.tags_enable }}">
   <div class="section-header section-header--breadcrumb">
     {% include 'breadcrumb' %}
   </div>
@@ -17,21 +20,39 @@
   {% if collection.products.size == 0 %}
     <p>This order form collection is empty. <a href="/admin/collections/{{ collection.id }}" target="_blank">Add a product</a> to the collection.</p>
   {% else %}
+    <select id="product-filter">
+      <option></option>
+      {% for product in collection.products %}
+        <option value="{{ product.id }}" data-image="{{ product.featured_image | img_url: '30x30', scale: 2 }}">{{ product.title }}</option>
+
+      {% endfor %}
+    </select>
     <div id="OrderForm">
 
       {% for product in collection.products %}
         {% include 'order-list-item' with product %}
-        {% if forloop.last == false %}<hr>{% endif %}
       {% endfor %}
 
-      <button class="btn btn--full hide" id="CheckOut">
-        <span>{{ 'cart.general.checkout' | t }} <span id="OrderFormProgress"></span></span>
-      </button>
-
     </div>
+    <button class="btn btn--full hide" id="CheckOut">
+      <span>{{ 'cart.general.checkout' | t }} <span id="OrderFormProgress"></span></span>
+    </button>
   {% endif %}
 
 </div>
 <script type="application/json" id="ProductsJson">
   {{ collection.products | json }}
 </script>
+{% schema %}
+  {
+    "name": "Order Form",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "filter",
+        "label": "Display a filter (good for large collections)",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

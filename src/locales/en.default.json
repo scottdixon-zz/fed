@@ -279,7 +279,9 @@
       "description": "Description",
       "full_details": "Full details",
       "price_per_unit": "Price Per Unit",
-      "add_another_variant": "+ add another variant"
+      "add_another_variant": "+ add another variant",
+      "empty_order_form": "Your order form is empty! Please add your first product.",
+      "add_a_product": "Add a product"
     },
     "zoom": {
       "next": "Next (Right arrow key)",

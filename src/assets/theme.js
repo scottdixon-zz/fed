@@ -642,6 +642,7 @@ theme.Product = (function() {
     init: function() {
       this.initBreakpoints();
       this.initProductVariant();
+      this.initProductVariant();
       this.productImageSwitch();
       timber.autoResponsiveElements();
 
@@ -1050,6 +1051,8 @@ theme.OrderForm = (function() {
   function OrderForm(container) {
     var self = this;
     this.$container = $(container);
+    this.filter = this.$container.data('section-filter');
+
     this.products = JSON.parse(
       document.getElementById('ProductsJson').innerHTML
     );
@@ -1075,11 +1078,99 @@ theme.OrderForm = (function() {
         };
 
         // Create variant drop downs for each product
-        self.initProductVariant(product);
+        self.initProduct(product);
       });
 
-      $('#OrderForm form').submit(function(e) {
+      function formatThumbnail (product) {
+        if (!product.id) {
+          return product.text;
+        }
+
+        var thumbnail = $(product.element).data('image');
+        var $product = $(
+          '<span><img src="' + thumbnail + '" class="filter-thumb" aria-hidden="true" alt="{{ product.text }}" /> ' + product.text + '</span>'
+        );
+        return $product;
+      };
+
+      // Select filter
+      if (this.filter) {
+        $('#CheckOut').attr('disabled', 'disabled');
+        $('#OrderForm').html(theme.strings.emptyOrderForm).addClass('empty');
+
+        $('#product-filter').show().select2({ placeholder: theme.strings.addAProduct, templateResult: formatThumbnail });
+        $('#product-filter').on('select2:select', function (e) {
+            var data = e.params.data;
+            var image = $(data.element).data('image');
+            if ($('#OrderForm').hasClass('empty')) {
+              $('#OrderForm').removeClass('empty');
+              $('#OrderForm').empty();
+              $('#CheckOut').removeAttr('disabled');
+            }
+            self.cloneProduct(data.id);
+            $(this).val(null).trigger("change");
+        });
+      }
+
+      // Listen for checkout click
+      this.checkoutButton.click(this.checkout.bind(this));
+
+      // Sticky checkout button
+      $(window).scroll(function (event) {
+        var bottomY = $(this).scrollTop() + $(window).height();
+        var firstProduct = $('#OrderForm form:first');
+        var orderForm = $('#OrderForm');
+
+        // Handle empty forms
+        if (!firstProduct.length) {
+          return $('#CheckOut').removeClass('sticky');
+        }
+
+        var bottomOfFirstProduct = firstProduct.offset().top + firstProduct.height();
+        var bottomOfOrderForm = orderForm.offset().top + orderForm.height() + 75;
+
+        // If the user has scrolled past the first product but hasn't scrolled past the last
+        if (bottomY >= bottomOfFirstProduct && bottomY <= bottomOfOrderForm) {
+          // Graceful slide in
+          var bottom = Math.min(bottomY - bottomOfFirstProduct - 60, 0);
+          $('#CheckOut').css('bottom', bottom + 'px');
+          $('#CheckOut').addClass('sticky');
+        } else {
+          $('#CheckOut').removeClass('sticky');
+        }
+      }).trigger('scroll');
+
+    },
+    cloneProduct: function (productId) {
+      var self = this;
+      var copy = self.cachedForms[productId];
+      var form = copy.form;
+
+      // Keep track of total clones
+      copy.count++;
+      var productIdWithCount = productId + '-' + copy.count;
+
+      // Update form + select ids to include the clone number.
+      form.attr('id', 'product_form_' + productIdWithCount);
+      form.find('select[name=id]').attr('id', 'ProductSelect-' + productIdWithCount);
+
+      // Insert the clone into the DOM and inititalize
+      $('#OrderForm').prepend(form.clone());
+      self.initProduct({ id: productIdWithCount });
+      $(window).trigger('scroll');
+    },
+    initProduct: function(product) {
+      var self = this;
+      var originalProductId = product.id.toString().split('-')[0];
+      var productForm = $('#product_form_' + product.id);
+      var priceSpan = productForm.find('.price span');
+      var qtyInput = productForm.find('input[name=quantity]');
+      var copy = self.cachedForms[originalProductId];
+
+      // Listen for form submittion (e.g. user hits return button)
+      productForm.submit(function(e) {
         e.preventDefault();
+        // Valide, scroll down and submit
         if (self.validate()) {
           $('html, body').animate({
             scrollTop: $("#CheckOut").offset().top - 300
@@ -1093,41 +1184,41 @@ theme.OrderForm = (function() {
         }
       });
 
-      // Listen for checkout click
-      this.checkoutButton.click(this.checkout.bind(this));
-    },
-    initProductVariant: function(product) {
-      var self = this;
-      var originalProductId = product.id.toString().split('-')[0];
-      var productForm = $('#product_form_' + product.id);
-      var priceSpan = productForm.find('.price span');
-      var qtyInput = productForm.find('input[name=quantity]');
-      var copy = self.cachedForms[originalProductId];
-
       // Remove existing labels
       productForm.find('label:first').remove();
       productForm.find('button').hide();
       productForm.find('.price').removeClass('hide');
 
-      // Add a duplicate button
-      productForm.find('h3').append('<a href="javascript:;">' + theme.strings.addAnotherVariant + '</a>');
-      productForm.find('h3').on('click', 'a', function(){
-        var form = copy.form;
+      if (this.filter) {
+        // If using the filter, add a 'remove' button
+        productForm.find('h3').append('<a href="javascript:;">' + theme.strings.remove + '</a>');
+        productForm.find('h3').on('click', 'a', function() {
+          $(this).closest('form').remove();
+          if (!$('#OrderForm form').length) {
+            $('#OrderForm').html(theme.strings.emptyOrderForm).addClass('empty');
+            $('#CheckOut').attr('disabled', 'disabled');
+            $(window).trigger('scroll');
+          }
+        });
+      } else {
+        // If they're not using the filter, add a 'duplicate' button
+        productForm.find('h3').append('<a href="javascript:;">' + theme.strings.addAnotherVariant + '</a>');
+        productForm.find('h3').on('click', 'a', function() {
+          var form = copy.form;
 
-        // Keep track of total clones
-        copy.count++;
-        var productIdWithCount = originalProductId + '-' + copy.count;
+          // Keep track of total clones
+          copy.count++;
+          var productIdWithCount = originalProductId + '-' + copy.count;
 
-        // Update form + select ids to include the clone number.
-        form.attr('id', 'product_form_' + productIdWithCount);
-        form.find('select[name=id]').attr('id', 'ProductSelect-' + productIdWithCount);
+          // Update form + select ids to include the clone number.
+          form.attr('id', 'product_form_' + productIdWithCount);
+          form.find('select[name=id]').attr('id', 'ProductSelect-' + productIdWithCount);
 
-        // Insert the clone into the DOM and inititalize
-        form.clone().insertAfter($(this).closest('form'));
-        $('<hr />').insertAfter($(this).closest('form'));
-
-        self.initProductVariant({ id: productIdWithCount });
-      });
+          // Insert the clone into the DOM and inititalize
+          form.clone().insertAfter($(this).closest('form'));
+          self.initProduct({ id: productIdWithCount });
+        });
+      }
 
       var selectCallback = function(variant, selector) {
         // Make sure the variant isn't sold out
