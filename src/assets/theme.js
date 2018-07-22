@@ -1064,7 +1064,7 @@ theme.OrderForm = (function() {
       var self = this;
 
       this.cachedForms = {};
-      this.checkoutButton = $('#CheckOut');
+      this.checkoutButton = $('#check-out');
 
       // Reveal the order form checkout button
       this.checkoutButton.removeClass('hide');
@@ -1095,17 +1095,17 @@ theme.OrderForm = (function() {
 
       // Select filter
       if (this.filter) {
-        $('#CheckOut').attr('disabled', 'disabled');
-        $('#OrderForm').html(theme.strings.emptyOrderForm).addClass('empty');
+        $('#check-out').attr('disabled', 'disabled');
+        $('#order-form').html(theme.strings.emptyOrderForm).addClass('empty');
 
         $('#product-filter').show().select2({ placeholder: theme.strings.addAProduct, templateResult: formatThumbnail });
         $('#product-filter').on('select2:select', function (e) {
             var data = e.params.data;
             var image = $(data.element).data('image');
-            if ($('#OrderForm').hasClass('empty')) {
-              $('#OrderForm').removeClass('empty');
-              $('#OrderForm').empty();
-              $('#CheckOut').removeAttr('disabled');
+            if ($('#order-form').hasClass('empty')) {
+              $('#order-form').removeClass('empty');
+              $('#order-form').empty();
+              $('#check-out').removeAttr('disabled');
             }
             self.cloneProduct(data.id);
             $(this).val(null).trigger("change");
@@ -1118,12 +1118,12 @@ theme.OrderForm = (function() {
       // Sticky checkout button
       $(window).scroll(function (event) {
         var bottomY = $(this).scrollTop() + $(window).height();
-        var firstProduct = $('#OrderForm form:first');
-        var orderForm = $('#OrderForm');
+        var firstProduct = $('#order-form form:first');
+        var orderForm = $('#order-form');
 
         // Handle empty forms
         if (!firstProduct.length) {
-          return $('#CheckOut').removeClass('sticky');
+          return $('#check-out').removeClass('sticky');
         }
 
         var bottomOfFirstProduct = firstProduct.offset().top + firstProduct.height();
@@ -1133,10 +1133,10 @@ theme.OrderForm = (function() {
         if (bottomY >= bottomOfFirstProduct && bottomY <= bottomOfOrderForm) {
           // Graceful slide in
           var bottom = Math.min(bottomY - bottomOfFirstProduct - 60, 0);
-          $('#CheckOut').css('bottom', bottom + 'px');
-          $('#CheckOut').addClass('sticky');
+          $('#check-out').css('bottom', bottom + 'px');
+          $('#check-out').addClass('sticky');
         } else {
-          $('#CheckOut').removeClass('sticky');
+          $('#check-out').removeClass('sticky');
         }
       }).trigger('scroll');
 
@@ -1159,7 +1159,7 @@ theme.OrderForm = (function() {
       if (insertAfter) {
         form.clone().insertAfter(insertAfter);
       } else {
-        $('#OrderForm').prepend(form.clone());
+        $('#order-form').prepend(form.clone());
       }
 
       // Initialize new product
@@ -1182,7 +1182,7 @@ theme.OrderForm = (function() {
         // Valide, scroll down and submit
         if (self.validate()) {
           $('html, body').animate({
-            scrollTop: $("#CheckOut").offset().top - 300
+            scrollTop: $("#check-out").offset().top - 300
           }, 500);
 
           // Callback fires twice (once for each element)
@@ -1203,9 +1203,9 @@ theme.OrderForm = (function() {
         productForm.find('h3').append('<a href="javascript:;">' + theme.strings.remove + '</a>');
         productForm.find('h3').on('click', 'a', function() {
           $(this).closest('form').remove();
-          if (!$('#OrderForm form').length) {
-            $('#OrderForm').html(theme.strings.emptyOrderForm).addClass('empty');
-            $('#CheckOut').attr('disabled', 'disabled');
+          if (!$('#order-form form').length) {
+            $('#order-form').html(theme.strings.emptyOrderForm).addClass('empty');
+            $('#check-out').attr('disabled', 'disabled');
             $(window).trigger('scroll');
           }
         });
@@ -1265,7 +1265,7 @@ theme.OrderForm = (function() {
       var qtyInput = productForm.find('input[name=quantity]');
       var remaining = this.queueSize-this.queue.length;
 
-      this.checkoutButton.find('#OrderFormProgress').html('(' + remaining + '/' + this.queueSize + ')');
+      this.checkoutButton.find('#order-form-progress').html('(' + remaining + '/' + this.queueSize + ')');
 
       // Skip zero qty items
       if (qtyInput.val() > 0) {
@@ -1277,7 +1277,7 @@ theme.OrderForm = (function() {
           success: self.processQueue.bind(this),
           error: function (error) {
             self.checkoutButton.removeAttr('disabled');
-            self.checkoutButton.find('#OrderFormProgress').empty();
+            self.checkoutButton.find('#order-form-progress').empty();
 
             // Display error message
             var errorMsg = error.responseJSON.description;
@@ -1299,7 +1299,7 @@ theme.OrderForm = (function() {
     },
     validate: function () {
       var valid = true;
-      $('#OrderForm form').each(function(){
+      $('#order-form form').each(function(){
         // Check the user is ordering this product
         if ($(this).find('input[name=quantity]').val() > 0) {
           // If the form is invalid, trigger browser error handling
@@ -1321,7 +1321,7 @@ theme.OrderForm = (function() {
 
       this.checkoutButton.attr('disabled', 'disabled')
 
-      this.queue = $('#OrderForm form').toArray();
+      this.queue = $('#order-form form').toArray();
       this.queueSize = this.queue.length;
 
       this.processQueue();

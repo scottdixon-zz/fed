@@ -24,17 +24,16 @@
       <option></option>
       {% for product in collection.products %}
         <option value="{{ product.id }}" data-image="{{ product.featured_image | img_url: '30x30', scale: 2 }}">{{ product.title }}</option>
-
       {% endfor %}
     </select>
-    <div id="OrderForm">
 
+    <div id="order-form">
       {% for product in collection.products %}
         {% include 'order-list-item' with product %}
       {% endfor %}
-
     </div>
-    <button class="btn btn--full hide" id="CheckOut">
+
+    <button class="btn btn--full hide" id="check-out">
       <span>{{ 'cart.general.checkout' | t }} <span id="OrderFormProgress"></span></span>
     </button>
   {% endif %}

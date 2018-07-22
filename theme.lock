@@ -20,9 +20,9 @@ assets/lazysizes.min.js:
 assets/password-page-background.jpg:
   development: 2018-07-19T12:05:56+10:00   4d5821272f875e5c11dd3a8c8e1d6133
 assets/theme.js:
-  development: 2018-07-22T16:08:07+10:00   09981b28d6484e6bf44f70aae3aaee56
+  development: 2018-07-22T16:13:49+10:00   d1dee6c68f40f164e382540483c3de96
 assets/theme.scss.liquid:
-  development: 2018-07-22T12:03:52+10:00   bbad790954f1ea33d218f600c5c1813c
+  development: 2018-07-22T16:14:03+10:00   7da0b46e830624fd0bae71cfd2c2f108
 assets/timber.scss.liquid:
   development: 2018-07-19T12:05:57+10:00   d4edffef339bce03f3020d28cf6c20ae
 config/settings_data.json:
@@ -58,7 +58,7 @@ sections/cart-template.liquid:
 sections/collection-list.liquid:
   development: 2018-07-19T12:05:53+10:00   5ce167a04cb4d3216afbe926670ff26b
 sections/collection-order.liquid:
-  development: 2018-07-22T14:38:30+10:00   980aacebc77444bf07c21c608c1daf75
+  development: 2018-07-22T16:15:03+10:00   a9ed3020010bc62c31b9a97b0143f323
 sections/collection-template.liquid:
   development: 2018-07-19T12:05:53+10:00   793cf91cb9827febf7ae64f907034ecd
 sections/custom-html.liquid:
