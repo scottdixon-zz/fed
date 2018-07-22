@@ -90,7 +90,7 @@ sections/password-content.liquid:
 sections/password-header.liquid:
   development: 2018-07-19T12:05:54+10:00   139dbe1b79b652043852cc73731d43e4
 sections/product-personalize.liquid:
-  development: 2018-07-21T11:24:32+10:00   714ca0debceb962f0245ab5cc9f3e7f2
+  development: 2018-07-22T19:33:13+10:00   3415320e4824aac6ae59bb158c4b52ad
 sections/product-template.liquid:
   development: 2018-07-21T17:34:34+10:00   945822164de4c2e0f95da7df5be37e02
 sections/rich-text.liquid:
