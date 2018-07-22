@@ -642,7 +642,6 @@ theme.Product = (function() {
     init: function() {
       this.initBreakpoints();
       this.initProductVariant();
-      this.initProductVariant();
       this.productImageSwitch();
       timber.autoResponsiveElements();
 
@@ -1052,7 +1051,6 @@ theme.OrderForm = (function() {
     var self = this;
     this.$container = $(container);
     this.filter = this.$container.data('section-filter');
-
     this.products = JSON.parse(
       document.getElementById('ProductsJson').innerHTML
     );
