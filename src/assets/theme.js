@@ -1141,7 +1141,7 @@ theme.OrderForm = (function() {
       }).trigger('scroll');
 
     },
-    cloneProduct: function (productId) {
+    cloneProduct: function (productId, insertAfter) {
       var self = this;
       var copy = self.cachedForms[productId];
       var form = copy.form;
@@ -1154,9 +1154,18 @@ theme.OrderForm = (function() {
       form.attr('id', 'product_form_' + productIdWithCount);
       form.find('select[name=id]').attr('id', 'ProductSelect-' + productIdWithCount);
 
-      // Insert the clone into the DOM and inititalize
-      $('#OrderForm').prepend(form.clone());
+      // Insert the clone into the DOM either after a specific
+      // element or at the top of the form (i.e. adding from filter)
+      if (insertAfter) {
+        form.clone().insertAfter(insertAfter);
+      } else {
+        $('#OrderForm').prepend(form.clone());
+      }
+
+      // Initialize new product
       self.initProduct({ id: productIdWithCount });
+
+      // Trigger scroll to handle sticky checkout button
       $(window).trigger('scroll');
     },
     initProduct: function(product) {
@@ -1204,19 +1213,7 @@ theme.OrderForm = (function() {
         // If they're not using the filter, add a 'duplicate' button
         productForm.find('h3').append('<a href="javascript:;">' + theme.strings.addAnotherVariant + '</a>');
         productForm.find('h3').on('click', 'a', function() {
-          var form = copy.form;
-
-          // Keep track of total clones
-          copy.count++;
-          var productIdWithCount = originalProductId + '-' + copy.count;
-
-          // Update form + select ids to include the clone number.
-          form.attr('id', 'product_form_' + productIdWithCount);
-          form.find('select[name=id]').attr('id', 'ProductSelect-' + productIdWithCount);
-
-          // Insert the clone into the DOM and inititalize
-          form.clone().insertAfter($(this).closest('form'));
-          self.initProduct({ id: productIdWithCount });
+          self.cloneProduct(originalProductId, $(this).closest('form'));
         });
       }
 
