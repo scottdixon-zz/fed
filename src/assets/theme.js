@@ -1098,7 +1098,10 @@ theme.OrderForm = (function() {
         $('#check-out').attr('disabled', 'disabled');
         $('#order-form').html(theme.strings.emptyOrderForm).addClass('empty');
 
-        $('#product-filter').show().select2({ placeholder: theme.strings.addAProduct, templateResult: formatThumbnail });
+        $('#product-filter').show().select2({
+          placeholder: theme.strings.addAProduct,
+          templateResult: formatThumbnail
+        });
         $('#product-filter').on('select2:select', function (e) {
             var data = e.params.data;
             var image = $(data.element).data('image');
@@ -1108,6 +1111,9 @@ theme.OrderForm = (function() {
               $('#check-out').removeAttr('disabled');
             }
             self.cloneProduct(data.id);
+
+            // Default quantity to 1
+            $('#Quantity-'+data.id).val(1);
             $(this).val(null).trigger("change");
         });
       }
